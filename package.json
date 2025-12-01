@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "catalog:*",
+    "typescript": "catalog:",
     "@better-slop-internals/tsconfig": "workspace:*"
   }
 }

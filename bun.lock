@@ -3,20 +3,42 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "llms",
+      "name": "@better-slop/ocx",
       "devDependencies": {
         "@better-slop-internals/tsconfig": "workspace:*",
         "@types/bun": "latest",
-        "typescript": "^5",
+        "typescript": "catalog:",
       },
     },
     "internals/tsconfig": {
       "name": "@better-slop-internals/tsconfig",
       "version": "1.0.0",
     },
+    "packages/librarian-plugin": {
+      "name": "@better-slop/ocx-librarian-plugin",
+      "version": "0.1.0",
+      "dependencies": {
+        "@opencode-ai/plugin": "catalog:",
+      },
+      "devDependencies": {
+        "@better-slop-internals/tsconfig": "workspace:*",
+        "@types/bun": "latest",
+        "typescript": "catalog:",
+      },
+    },
+  },
+  "catalog": {
+    "@opencode-ai/plugin": "latest",
+    "typescript": "5.9.3",
   },
   "packages": {
     "@better-slop-internals/tsconfig": ["@better-slop-internals/tsconfig@workspace:internals/tsconfig"],
+
+    "@better-slop/ocx-librarian-plugin": ["@better-slop/ocx-librarian-plugin@workspace:packages/librarian-plugin"],
+
+    "@opencode-ai/plugin": ["@opencode-ai/plugin@1.0.125", "", { "dependencies": { "@opencode-ai/sdk": "1.0.125", "zod": "4.1.8" } }, "sha512-fq7GwDZAjTupLTTW7wzhWDowz7b59Lohg+SITQCkVDOJ+nwK0da1DZxeV0AgrzKPbs9g4xPI4LG2SFdsPz1GdQ=="],
+
+    "@opencode-ai/sdk": ["@opencode-ai/sdk@1.0.125", "", {}, "sha512-beVzY/2eYiDYexAvGUe7LKnwaG7g/dm8/AVdtXtKbY2R3chnmBUMbmpVCccMk00BNhdbOxVRo5oeFUjdNykAIQ=="],
 
     "@types/bun": ["@types/bun@1.3.3", "", { "dependencies": { "bun-types": "1.3.3" } }, "sha512-ogrKbJ2X5N0kWLLFKeytG0eHDleBYtngtlbu9cyBKFtNL3cnpDZkNdQj8flVf6WTZUX5ulI9AY1oa7ljhSrp+g=="],
 
@@ -27,5 +49,7 @@
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "undici-types": ["undici-types@7.16.0", "", {}, "sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw=="],
+
+    "zod": ["zod@4.1.8", "", {}, "sha512-5R1P+WwQqmmMIEACyzSvo4JXHY5WiAFHRMg+zBZKgKS+Q1viRa0C1hmUKtHltoIFKtIdki3pRxkmpP74jnNYHQ=="],
   }
 }
