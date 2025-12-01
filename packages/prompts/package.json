@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@better-slop/prompts",
+  "private": true,
+  "version": "0.1.0",
+  "description": "OpenCode Librarian Plugin",
+  "files": [
+    "*.txt",
+    "*.hbs"
+  ],
+  "dependencies": {
+    "handlebars": "catalog:"
+  },
+  "devDependencies": {
+    "@better-slop-internals/tsconfig": "workspace:*"
+  }
+}

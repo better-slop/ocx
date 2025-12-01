@@ -1,9 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@better-slop/ocx-librarian-plugin",
+  "name": "@better-slop/core",
   "private": false,
   "version": "0.1.0",
   "description": "OpenCode Librarian Plugin",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    }
+  },
   "dependencies": {
     "@opencode-ai/plugin": "catalog:"
   },
