@@ -46,6 +46,15 @@ gh auth status
 | `OCX_BUMP` | `patch` | `major` \| `minor` \| `patch` |
 | `OCX_VERSION` | computed | Explicit version override |
 
+## Dry Run
+
+```bash
+bun scripts/publish.ts --dry-run
+OCX_CHANNEL=latest OCX_BUMP=minor bun scripts/publish.ts --dry-run
+```
+
+Shows what would happen without making any changes.
+
 ## Preview Release (Local)
 
 ```bash

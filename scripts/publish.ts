@@ -4,6 +4,8 @@
 
 import { $ } from "bun"
 
+const DRY_RUN = process.argv.includes("--dry-run")
+
 type Bump = "major" | "minor" | "patch"
 
 type PackageJson = {
@@ -18,7 +20,7 @@ type PackageJson = {
   optionalDependencies?: Record<string, string>
 }
 
-const repoRoot = new URL("..", import.meta.url).pathname
+const repoRoot = new URL("..", import.meta.url).pathname.replace(/\/$/, "")
 process.chdir(repoRoot)
 
 // ----- Script helper (channel + version) -----
@@ -97,7 +99,11 @@ const Script = {
   },
 }
 
-console.log(`ocx script`, JSON.stringify(Script, null, 2))
+console.log(`ocx script`, JSON.stringify({ ...Script, dryRun: DRY_RUN }, null, 2))
+
+if (DRY_RUN) {
+  console.log("\n*** DRY RUN MODE - no changes will be made ***\n")
+}
 
 // ----- Helpers -----
 
@@ -153,51 +159,84 @@ async function main() {
   const packages = await collectPackages()
 
   // 1) Update version in all package.json files
+  console.log("\nPackages to update:")
   for (const pkg of packages) {
     pkg.json.version = Script.version
+    console.log(`  ${pkg.relativePath} -> ${Script.version}`)
   }
 
-  for (const pkg of packages) {
-    await writeJson(pkg.path, pkg.json)
+  if (!DRY_RUN) {
+    for (const pkg of packages) {
+      await writeJson(pkg.path, pkg.json)
+    }
   }
 
   // 2) Reinstall to update bun.lock
-  console.log("Running bun install to refresh lockfile...")
-  await $`bun install`
+  if (!DRY_RUN) {
+    console.log("\nRunning bun install to refresh lockfile...")
+    await $`bun install`
+  } else {
+    console.log("\n[dry-run] Would run: bun install")
+  }
 
   // 3) Publish non-private @better-slop/* packages from packages/*
   const publishTargets = determinePublishTargets(packages)
   if (publishTargets.length === 0) {
-    console.warn("No publishable packages found under packages/*.")
+    console.warn("\nNo publishable packages found under packages/*.")
+  } else {
+    console.log("\nPackages to publish:")
+    for (const pkg of publishTargets) {
+      const dir = pkg.relativePath.replace(/\/package\.json$/, "")
+      const name = pkg.json.name ?? dir
+      console.log(`  ${name} (${dir})`)
+    }
   }
 
-  for (const pkg of publishTargets) {
-    const dir = pkg.relativePath.replace(/\/package\.json$/, "")
-    const name = pkg.json.name ?? dir
-    console.log(`Publishing ${name} from ${dir} with tag "${Script.channel}"...`)
-    await $`cd ${dir} && bun publish --tag ${Script.channel} --access public`
+  if (!DRY_RUN) {
+    for (const pkg of publishTargets) {
+      const dir = pkg.relativePath.replace(/\/package\.json$/, "")
+      const name = pkg.json.name ?? dir
+      console.log(`\nPublishing ${name} from ${dir} with tag "${Script.channel}"...`)
+      await $`cd ${dir} && bun publish --tag ${Script.channel} --access public`
+    }
+  } else {
+    for (const pkg of publishTargets) {
+      const dir = pkg.relativePath.replace(/\/package\.json$/, "")
+      console.log(`[dry-run] Would run: cd ${dir} && bun publish --tag ${Script.channel} --access public`)
+    }
   }
 
   // 4) For stable releases, commit, tag, push, and create GitHub release
   if (!Script.preview) {
-    console.log("Stable release detected, committing and tagging...")
+    console.log("\nStable release detected, would commit and tag...")
+    if (!DRY_RUN) {
+      await $`git commit -am "release: v${Script.version}"`
+      await $`git push`
+      await $`git tag v${Script.version}`
+      await $`git push --tags`
 
-    await $`git commit -am "release: v${Script.version}"`
-    await $`git push`
-    await $`git tag v${Script.version}`
-    await $`git push --tags`
-
-    try {
-      console.log("Creating GitHub release...")
-      await $`gh release create v${Script.version} --title "v${Script.version}" --notes ""`
-    } catch (err) {
-      console.warn("Failed to create GitHub release via gh; tags were still pushed.", err)
+      try {
+        console.log("Creating GitHub release...")
+        await $`gh release create v${Script.version} --title "v${Script.version}" --notes ""`
+      } catch (err) {
+        console.warn("Failed to create GitHub release via gh; tags were still pushed.", err)
+      }
+    } else {
+      console.log(`[dry-run] Would run: git commit -am "release: v${Script.version}"`)
+      console.log(`[dry-run] Would run: git push`)
+      console.log(`[dry-run] Would run: git tag v${Script.version}`)
+      console.log(`[dry-run] Would run: git push --tags`)
+      console.log(`[dry-run] Would run: gh release create v${Script.version} --title "v${Script.version}" --notes ""`)
     }
   } else {
-    console.log("Preview release: skipping git commit/tag/push and GitHub release.")
+    console.log("\nPreview release: skipping git commit/tag/push and GitHub release.")
   }
 
-  console.log("Publish script completed.")
+  if (DRY_RUN) {
+    console.log("\n*** DRY RUN COMPLETE - no changes were made ***")
+  } else {
+    console.log("\nPublish script completed.")
+  }
 }
 
 main().catch((err) => {
