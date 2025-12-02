@@ -13,7 +13,9 @@
     "handlebars": "4.7.8"
   },
   "scripts": {
-    "compile:scripts": "bun build scripts/* --compile --out dist/scripts"
+    "compile:scripts": "bun build scripts/* --compile --out dist/scripts",
+    "deploy": "bun run --filter docs deploy",
+    "destroy": "bun run --filter docs destroy"
   },
   "devDependencies": {
     "@types/bun": "latest",
