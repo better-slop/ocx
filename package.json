@@ -23,5 +23,8 @@
     "@types/bun": "latest",
     "typescript": "catalog:",
     "@better-slop-internals/tsconfig": "workspace:*"
+  },
+  "patchedDependencies": {
+    "alchemy@0.79.0": "patches/alchemy@0.79.0.patch"
   }
 }

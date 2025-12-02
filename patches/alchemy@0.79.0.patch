@@ -1,0 +1,115 @@
+diff --git a/lib/cloudflare/bundle/plugin-wasm.js b/lib/cloudflare/bundle/plugin-wasm.js
+index 3b0a5459d90a86bb7a53ab758f8a07b8885a55cb..684f8297edca416008db86d4cb11adc44e9af71b 100644
+--- a/lib/cloudflare/bundle/plugin-wasm.js
++++ b/lib/cloudflare/bundle/plugin-wasm.js
+@@ -10,31 +10,42 @@ export function createWasmPlugin() {
+                 modules.clear();
+             });
+             // Handle imports like `import "./foo.wasm"` and `import "./foo.wasm?module"`
+-            // TODO(john): Figure out why this suddenly became necessary
+             build.onResolve({ filter: /\.wasm(\?.*)?$/ }, async (args) => {
+                 const resolved = modules.get(args.path);
+                 if (resolved) {
+                     return { path: resolved.path, external: true };
+                 }
+                 // Normalize path and remove the `?module` query param so we have the actual file name to copy
+-                const name = path.normalize(args.path).replace(/\?.*$/, "");
++                let name = path.normalize(args.path).replace(/\?.*$/, "");
++                
++                // Fix for monorepos: detect embedded absolute paths (e.g., "apps/docs/home/runner/..." or similar)
++                // This happens when esbuild emits paths with absolute paths embedded as relative
++                const absolutePathMatch = name.match(/(?:^|\/)(\/(?:home|Users|tmp|var|usr|opt|root|mnt)\/.*)/i);
++                if (absolutePathMatch) {
++                    name = absolutePathMatch[1];
++                }
++                
+                 // Resolve path to outdir (required for monorepos if the workdir is not the same as process.cwd())
+                 assert(build.initialOptions.absWorkingDir && build.initialOptions.outdir, "Missing absWorkingDir or outdir from esbuild options");
+                 const outdir = path.resolve(build.initialOptions.absWorkingDir, build.initialOptions.outdir);
+-                // Copy to outdir so it's included in the upload
+-                const copyFrom = path.join(args.resolveDir, name);
+-                const copyTo = path.join(outdir, name);
++                
++                // Determine source path - use absolute path directly if detected, otherwise join with resolveDir
++                const copyFrom = path.isAbsolute(name) ? name : path.join(args.resolveDir, name);
++                
++                // For output, use just the basename to avoid path issues
++                const outputName = path.basename(name);
++                const copyTo = path.join(outdir, outputName);
++                
+                 await fs.mkdir(path.dirname(copyTo), { recursive: true });
+                 await fs.copyFile(copyFrom, copyTo);
+                 modules.set(args.path, {
+                     type: "wasm",
+-                    path: name,
++                    path: outputName,
+                 });
+-                // Resolve to the normalized file name (the `?module` query param is not needed in workerd)
+-                return { path: name, external: true };
++                // Resolve to the basename (the `?module` query param is not needed in workerd)
++                return { path: outputName, external: true };
+             });
+         },
+     };
+     return { plugin, modules };
+ }
+-//# sourceMappingURL=plugin-wasm.js.map
+\ No newline at end of file
+diff --git a/src/cloudflare/bundle/plugin-wasm.ts b/src/cloudflare/bundle/plugin-wasm.ts
+index 84ba420c435742de21619fe09baeaec095f7eaf7..033b136e7954aa561d49c7a414db778ecf1125f7 100644
+--- a/src/cloudflare/bundle/plugin-wasm.ts
++++ b/src/cloudflare/bundle/plugin-wasm.ts
+@@ -14,7 +14,6 @@ export function createWasmPlugin() {
+       });
+ 
+       // Handle imports like `import "./foo.wasm"` and `import "./foo.wasm?module"`
+-      // TODO(john): Figure out why this suddenly became necessary
+       build.onResolve({ filter: /\.wasm(\?.*)?$/ }, async (args) => {
+         const resolved = modules.get(args.path);
+         if (resolved) {
+@@ -22,7 +21,14 @@ export function createWasmPlugin() {
+         }
+ 
+         // Normalize path and remove the `?module` query param so we have the actual file name to copy
+-        const name = path.normalize(args.path).replace(/\?.*$/, "");
++        let name = path.normalize(args.path).replace(/\?.*$/, "");
++
++        // Fix for monorepos: detect embedded absolute paths (e.g., "apps/docs/home/runner/..." or similar)
++        // This happens when esbuild emits paths with absolute paths embedded as relative
++        const absolutePathMatch = name.match(/(?:^|\/)(\/(?:home|Users|tmp|var|usr|opt|root|mnt)\/.*)/i);
++        if (absolutePathMatch) {
++          name = absolutePathMatch[1];
++        }
+ 
+         // Resolve path to outdir (required for monorepos if the workdir is not the same as process.cwd())
+         assert(
+@@ -34,19 +40,23 @@ export function createWasmPlugin() {
+           build.initialOptions.outdir,
+         );
+ 
+-        // Copy to outdir so it's included in the upload
+-        const copyFrom = path.join(args.resolveDir, name);
+-        const copyTo = path.join(outdir, name);
++        // Determine source path - use absolute path directly if detected, otherwise join with resolveDir
++        const copyFrom = path.isAbsolute(name) ? name : path.join(args.resolveDir, name);
++
++        // For output, use just the basename to avoid path issues
++        const outputName = path.basename(name);
++        const copyTo = path.join(outdir, outputName);
++
+         await fs.mkdir(path.dirname(copyTo), { recursive: true });
+         await fs.copyFile(copyFrom, copyTo);
+ 
+         modules.set(args.path, {
+           type: "wasm",
+-          path: name,
++          path: outputName,
+         });
+ 
+-        // Resolve to the normalized file name (the `?module` query param is not needed in workerd)
+-        return { path: name, external: true };
++        // Resolve to the basename (the `?module` query param is not needed in workerd)
++        return { path: outputName, external: true };
+       });
+     },
+   };

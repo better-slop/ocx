@@ -36,7 +36,7 @@
       "devDependencies": {
         "@biomejs/biome": "^2.3.5",
         "@cloudflare/workers-types": "^4.20250805.0",
-        "@opennextjs/cloudflare": "^1.6.5",
+        "@opennextjs/cloudflare": "1.14.1",
         "@tailwindcss/postcss": "^4.1.16",
         "@types/mdx": "^2.0.13",
         "@types/node": "^24.10.0",
@@ -87,6 +87,9 @@
         "@better-slop-internals/tsconfig": "workspace:*",
       },
     },
+  },
+  "patchedDependencies": {
+    "alchemy@0.79.0": "patches/alchemy@0.79.0.patch",
   },
   "catalog": {
     "@opencode-ai/plugin": "latest",
@@ -464,13 +467,13 @@
 
     "@octokit/types": ["@octokit/types@14.1.0", "", { "dependencies": { "@octokit/openapi-types": "^25.1.0" } }, "sha512-1y6DgTy8Jomcpu33N+p5w58l6xyt55Ar2I91RPiIA0xCJBXyUAhXCcmZaDWSANiha7R9a6qJJ2CRomGPZ6f46g=="],
 
-    "@opencode-ai/plugin": ["@opencode-ai/plugin@1.0.125", "", { "dependencies": { "@opencode-ai/sdk": "1.0.125", "zod": "4.1.8" } }, "sha512-fq7GwDZAjTupLTTW7wzhWDowz7b59Lohg+SITQCkVDOJ+nwK0da1DZxeV0AgrzKPbs9g4xPI4LG2SFdsPz1GdQ=="],
+    "@opencode-ai/plugin": ["@opencode-ai/plugin@1.0.126", "", { "dependencies": { "@opencode-ai/sdk": "1.0.126", "zod": "4.1.8" } }, "sha512-HFDbAeGqJBG01qCF5QIJF+cevrnLWioTqDRquYQHmOpxmard7OINQt57qmO7y+3ozyFMsAwUTTD9HK0xULHgvQ=="],
 
-    "@opencode-ai/sdk": ["@opencode-ai/sdk@1.0.125", "", {}, "sha512-beVzY/2eYiDYexAvGUe7LKnwaG7g/dm8/AVdtXtKbY2R3chnmBUMbmpVCccMk00BNhdbOxVRo5oeFUjdNykAIQ=="],
+    "@opencode-ai/sdk": ["@opencode-ai/sdk@1.0.126", "", {}, "sha512-W7Ac9seN/LGZDNEEE5HtNLzTskOO9+9jfEAkSUydWkrr+224cplN9ELRwrJsCl/o51xJzns22sJ5BRTqzT3bYQ=="],
 
-    "@opennextjs/aws": ["@opennextjs/aws@3.9.0", "", { "dependencies": { "@ast-grep/napi": "^0.40.0", "@aws-sdk/client-cloudfront": "3.398.0", "@aws-sdk/client-dynamodb": "^3.398.0", "@aws-sdk/client-lambda": "^3.398.0", "@aws-sdk/client-s3": "^3.398.0", "@aws-sdk/client-sqs": "^3.398.0", "@node-minify/core": "^8.0.6", "@node-minify/terser": "^8.0.6", "@tsconfig/node18": "^1.0.3", "aws4fetch": "^1.0.20", "chalk": "^5.6.2", "cookie": "^1.0.2", "esbuild": "0.25.4", "express": "^5.1.0", "path-to-regexp": "^6.3.0", "urlpattern-polyfill": "^10.1.0", "yaml": "^2.8.1" }, "bin": { "open-next": "dist/index.js" } }, "sha512-04VpIbnKOJwBEoAdSUI1lbbDRWj482oEbRggXtAs+hXOCp54fxDRouNmonvXPoRq6Wbmry73PI1Ko6g3ygL2Hg=="],
+    "@opennextjs/aws": ["@opennextjs/aws@3.9.1", "", { "dependencies": { "@ast-grep/napi": "^0.40.0", "@aws-sdk/client-cloudfront": "3.398.0", "@aws-sdk/client-dynamodb": "^3.398.0", "@aws-sdk/client-lambda": "^3.398.0", "@aws-sdk/client-s3": "^3.398.0", "@aws-sdk/client-sqs": "^3.398.0", "@node-minify/core": "^8.0.6", "@node-minify/terser": "^8.0.6", "@tsconfig/node18": "^1.0.3", "aws4fetch": "^1.0.20", "chalk": "^5.6.2", "cookie": "^1.0.2", "esbuild": "0.25.4", "express": "^5.1.0", "path-to-regexp": "^6.3.0", "urlpattern-polyfill": "^10.1.0", "yaml": "^2.8.1" }, "bin": { "open-next": "dist/index.js" } }, "sha512-livYX8aIjXCYt3plyxqKisAyGRFfcUfo1BYtZppmugcPQBokbIzZ+jEUJbqUq1qZAIxRVAqMHDikbyTRadOx9A=="],
 
-    "@opennextjs/cloudflare": ["@opennextjs/cloudflare@1.14.0", "", { "dependencies": { "@ast-grep/napi": "0.40.0", "@dotenvx/dotenvx": "1.31.0", "@opennextjs/aws": "3.9.0", "cloudflare": "^4.4.1", "enquirer": "^2.4.1", "glob": "^12.0.0", "ts-tqdm": "^0.8.6", "yargs": "^18.0.0" }, "peerDependencies": { "wrangler": "^4.49.1" }, "bin": { "opennextjs-cloudflare": "dist/cli/index.js" } }, "sha512-syQYE1iGYvG7mFZAUJhKMES1i+Mx55r6yedWS+hiuS/RTHjTzYfss8e3dWy/qKLPuc7o/xruOYgqAU/BDsSVrA=="],
+    "@opennextjs/cloudflare": ["@opennextjs/cloudflare@1.14.1", "", { "dependencies": { "@ast-grep/napi": "0.40.0", "@dotenvx/dotenvx": "1.31.0", "@opennextjs/aws": "3.9.1", "cloudflare": "^4.4.1", "enquirer": "^2.4.1", "glob": "^12.0.0", "ts-tqdm": "^0.8.6", "yargs": "^18.0.0" }, "peerDependencies": { "wrangler": "^4.49.1" }, "bin": { "opennextjs-cloudflare": "dist/cli/index.js" } }, "sha512-yW/RoyPg77R56EzAC9Y1HnQMktKGx5ireU0R3XiwGO4rd2pIhHXyDxj18kX3Qgt3iozBvMXrSa2BxYcmaSN1MQ=="],
 
     "@orama/orama": ["@orama/orama@3.1.16", "", {}, "sha512-scSmQBD8eANlMUOglxHrN1JdSW8tDghsPuS83otqealBiIeMukCQMOf/wc0JJjDXomqwNdEQFLXLGHrU6PGxuA=="],
 
