@@ -6,7 +6,18 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  serverExternalPackages: ["typescript", "twoslash"],
+  serverExternalPackages: ["typescript", "@vercel/og"],
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Stub out @vercel/og to prevent WASM bundling issues on Cloudflare
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "@vercel/og": false,
+        "next/og": false,
+      };
+    }
+    return config;
+  },
   async redirects() {
     return [
       {
