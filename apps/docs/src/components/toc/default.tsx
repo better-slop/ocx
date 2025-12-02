@@ -1,28 +1,23 @@
 'use client';
-import { useI18n } from 'fumadocs-ui/contexts/i18n';
+import type { TOCItemType } from 'fumadocs-core/toc';
+import * as Primitive from 'fumadocs-core/toc';
+import { type ComponentProps, useRef } from 'react';
 import { cn } from '../../lib/cn';
 import { mergeRefs } from '../../lib/merge-refs';
-import { type ComponentProps, useRef } from 'react';
-import { useTOCItems, TocThumb } from './index';
-import * as Primitive from 'fumadocs-core/toc';
+import { useTOCItems, TocThumb, TocItemsEmpty } from './index';
 
 export function TOCItems({ ref, className, ...props }: ComponentProps<'div'>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const items = useTOCItems();
-  const { text } = useI18n();
 
-  if (items.length === 0)
-    return (
-      <div className="rounded-lg border bg-fd-card p-3 text-xs text-fd-muted-foreground">
-        {text.tocNoHeadings}
-      </div>
-    );
+  if (items.length === 0) return <TocItemsEmpty />;
 
   return (
     <>
       <TocThumb
         containerRef={containerRef}
         className="absolute top-(--fd-top) h-(--fd-height) w-px bg-fd-primary transition-all"
+        style={{ willChange: 'height, top' }}
       />
       <div
         ref={mergeRefs(ref, containerRef)}
@@ -40,12 +35,12 @@ export function TOCItems({ ref, className, ...props }: ComponentProps<'div'>) {
   );
 }
 
-function TOCItem({ item }: { item: Primitive.TOCItemType }) {
+function TOCItem({ item }: { item: TOCItemType }) {
   return (
     <Primitive.TOCItem
       href={item.url}
       className={cn(
-        'prose py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary',
+        'prose py-1.5 text-sm text-fd-muted-foreground transition-colors [overflow-wrap:anywhere] first:pt-0 last:pb-0 data-[active=true]:text-fd-primary',
         item.depth <= 2 && 'ps-3',
         item.depth === 3 && 'ps-6',
         item.depth >= 4 && 'ps-8',

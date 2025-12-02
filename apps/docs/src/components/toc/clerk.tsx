@@ -1,15 +1,14 @@
 'use client';
+import type { TOCItemType } from 'fumadocs-core/toc';
 import * as Primitive from 'fumadocs-core/toc';
 import { type ComponentProps, useEffect, useRef, useState } from 'react';
 import { cn } from '../../lib/cn';
-import { useTOCItems, TocThumb } from './index';
+import { useTOCItems, TocThumb, TocItemsEmpty } from './index';
 import { mergeRefs } from '../../lib/merge-refs';
-import { useI18n } from 'fumadocs-ui/contexts/i18n';
 
 export function TOCItems({ ref, className, ...props }: ComponentProps<'div'>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const items = useTOCItems();
-  const { text } = useI18n();
 
   const [svg, setSvg] = useState<{
     path: string;
@@ -63,12 +62,7 @@ export function TOCItems({ ref, className, ...props }: ComponentProps<'div'>) {
     };
   }, [items]);
 
-  if (items.length === 0)
-    return (
-      <div className="rounded-lg border bg-fd-card p-3 text-xs text-fd-muted-foreground">
-        {text.tocNoHeadings}
-      </div>
-    );
+  if (items.length === 0) return <TocItemsEmpty />;
 
   return (
     <>
@@ -89,6 +83,7 @@ export function TOCItems({ ref, className, ...props }: ComponentProps<'div'>) {
           <TocThumb
             containerRef={containerRef}
             className="mt-(--fd-top) h-(--fd-height) bg-fd-primary transition-all"
+            style={{ willChange: 'height, marginTop' }}
           />
         </div>
       )}
@@ -125,7 +120,7 @@ function TOCItem({
   upper = item.depth,
   lower = item.depth,
 }: {
-  item: Primitive.TOCItemType;
+  item: TOCItemType;
   upper?: number;
   lower?: number;
 }) {

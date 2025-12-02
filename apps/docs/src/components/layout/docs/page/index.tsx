@@ -67,7 +67,7 @@ type TableOfContentOptions = Pick<AnchorProviderProps, 'single'> & {
   component: ReactNode;
 
   /**
-   * @defaultValue 'normal'
+   * @defaultValue 'clerk'
    */
   style?: 'normal' | 'clerk';
 };
@@ -126,10 +126,10 @@ export function DocsPage({
             <PageTOCPopoverContent>
               {tocPopoverOptions.header}
               <TOCScrollArea>
-                {tocPopoverOptions.style === 'clerk' ? (
-                  <TocClerk.TOCItems />
-                ) : (
+                {tocPopoverOptions.style === 'normal' ? (
                   <TocDefault.TOCItems />
+                ) : (
+                  <TocClerk.TOCItems />
                 )}
               </TOCScrollArea>
               {tocPopoverOptions.footer}
@@ -165,10 +165,10 @@ export function DocsPage({
               <I18nLabel label="toc" />
             </h3>
             <TOCScrollArea>
-              {tocOptions.style === 'clerk' ? (
-                <TocClerk.TOCItems />
-              ) : (
+              {tocOptions.style === 'normal' ? (
                 <TocDefault.TOCItems />
+              ) : (
+                <TocClerk.TOCItems />
               )}
             </TOCScrollArea>
             {tocOptions.footer}
