@@ -1,5 +1,16 @@
 {
-  "title": "guide",
+  "title": "Guide",
   "root": true,
-  "pages": ["introduction", "installation", "basic-usage"]
+  "pages": [
+    "---Get Started---",
+    "introduction",
+    "installation",
+    "basic-usage",
+    "---Add-ons---",
+    "tools",
+    "plugins",
+    "themes",
+    "---Misc---",
+    "test"
+  ]
 }

@@ -1,3 +1,5 @@
 {
-  "pages": ["background-jobs", "warpgrep", "fuck"]
+  "title": "Tools",
+  "pages": ["background-jobs", "warpgrep"],
+  "defaultOpen": true
 }
