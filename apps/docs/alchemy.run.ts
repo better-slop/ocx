@@ -10,6 +10,7 @@ const app = await alchemy("better-slop-docs", {
 });
 
 export const website = await Nextjs("website", {
+  adopt: true,
   domains: ["better-slop.com"],
 });
 
