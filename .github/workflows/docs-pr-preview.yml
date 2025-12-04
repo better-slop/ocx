@@ -80,7 +80,7 @@ jobs:
       - *a1
       - *a2
       - name: Cleanup Preview
-        run: bun run destroy
+        run: bun run destroy --stage pr-${{ github.event.pull_request.number }}
         env:
           GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
