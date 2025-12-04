@@ -2,8 +2,11 @@ import alchemy from "alchemy";
 import { Nextjs } from "alchemy/cloudflare";
 import { CloudflareStateStore } from "alchemy/state";
 
+const stage = process.env.STAGE ?? "dev";
+const isProd = stage === "prod";
+
 const app = await alchemy("better-slop-docs", {
-  stage: process.env.STAGE,
+  stage,
   stateStore: process.env.CI
     ? (scope) => new CloudflareStateStore(scope)
     : undefined,
@@ -11,7 +14,7 @@ const app = await alchemy("better-slop-docs", {
 
 export const website = await Nextjs("website", {
   adopt: true,
-  domains: ["better-slop.com"],
+  domains: isProd ? ["better-slop.com"] : [`${stage}.better-slop.com`],
 });
 
 console.log({
