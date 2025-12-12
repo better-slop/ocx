@@ -1,4 +1,5 @@
-import { WarpGrepClient } from "@morphllm/morphsdk";
+import { WarpGrepClient } from "@morphllm/morphsdk/tools/warp-grep";
+import type { WarpGrepResult } from "@morphllm/morphsdk/tools/warp-grep";
 import { tool } from "@opencode-ai/plugin/tool";
 import { promises as fs } from "fs";
 import { resolve } from "path";
@@ -131,8 +132,8 @@ export default tool({
 
     // Execute WarpGrep
     try {
-      const client = new WarpGrepClient({ apiKey });
-      const result = await executeWithRetry(() =>
+      const client = new WarpGrepClient({ morphApiKey: apiKey });
+      const result: WarpGrepResult = await executeWithRetry(() =>
         client.execute({ query: question, repoRoot }),
       );
 
