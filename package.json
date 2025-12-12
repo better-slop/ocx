@@ -9,6 +9,7 @@
   ],
   "catalog": {
     "@opencode-ai/plugin": "latest",
+    "@types/bun": "latest",
     "typescript": "5.9.3",
     "handlebars": "4.7.8"
   },
@@ -20,7 +21,7 @@
     "destroy": "bun run destroy:docs"
   },
   "devDependencies": {
-    "@types/bun": "latest",
+    "@types/bun": "catalog:",
     "typescript": "catalog:",
     "@better-slop-internals/tsconfig": "workspace:*"
   },

@@ -3,7 +3,7 @@
   "name": "@better-slop/ocx-librarian-plugin",
   "private": false,
   "version": "0.1.0",
-  "description": "OpenCode Librarian Plugin",
+  "description": "OpenCode Plugin",
   "exports": {
     ".": {
       "import": "./src/index.ts"
@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@better-slop-internals/tsconfig": "workspace:*",
-    "@types/bun": "latest",
+    "@types/bun": "catalog:",
     "typescript": "catalog:"
   }
 }
