@@ -9,6 +9,7 @@ import {
   resolveConfigRoot,
   resolveRegistryTree,
   type InstallError,
+  type InstallPlan,
   type ResolveRegistryTreeError,
 } from "@better-slop/core/registry";
 
@@ -86,12 +87,12 @@ function exitWithError(error: ResolveRegistryTreeError | InstallError): void {
   process.exitCode = 1;
 }
 
-function printHooks(plans: Array<{ item: { kind: string; name: string }; postinstall: null | { commands: string[] } }>): void {
-  const with_hooks = plans.filter((p) => p.postinstall && p.postinstall.commands.length > 0);
-  if (with_hooks.length === 0) return;
+function printHooks(plans: Array<Pick<InstallPlan, "item" | "postinstall">>): void {
+  const withHooks = plans.filter((p) => p.postinstall && p.postinstall.commands.length > 0);
+  if (withHooks.length === 0) return;
 
   console.log("\nPostinstall hooks detected (skipped unless --allow-postinstall):");
-  for (const p of with_hooks) {
+  for (const p of withHooks) {
     console.log(`- ${p.item.kind}/${p.item.name}`);
     for (const cmd of p.postinstall?.commands ?? []) {
       console.log(`  - ${cmd}`);

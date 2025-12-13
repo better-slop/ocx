@@ -13,12 +13,12 @@ type State = {
 
 type JSONCResult<T> = Result<T, JSONCError>;
 
-function jsoncError(message: string): JSONCError {
+function createJSONCError(message: string): JSONCError {
   return { _tag: "JSONCError", message };
 }
 
 function fail<T>(message: string): JSONCResult<T> {
-  return err(jsoncError(message));
+  return err(createJSONCError(message));
 }
 
 function createState(): State {

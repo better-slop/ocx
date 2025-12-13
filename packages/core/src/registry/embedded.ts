@@ -12,7 +12,7 @@ export function listEmbeddedItems(): EmbeddedName[] {
 }
 
 export type EmbeddedReadFailed = {
-  _tag: "EmbeddedReadFailed";
+  readonly _tag: "EmbeddedReadFailed";
   name: string;
   cause: unknown;
 };

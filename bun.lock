@@ -109,7 +109,7 @@
   "catalog": {
     "@opencode-ai/plugin": "latest",
     "@types/bun": "latest",
-    "effect": "latest",
+    "effect": "3.19.11",
     "handlebars": "4.7.8",
     "typescript": "5.9.3",
   },

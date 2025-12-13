@@ -3,7 +3,7 @@ import path from "node:path";
 import { stat } from "node:fs/promises";
 import type { ConfigRoot } from "./types";
 
-async function isDir(p: string): Promise<boolean> {
+function isDir(p: string): Promise<boolean> {
   return stat(p).then((s) => s.isDirectory()).catch(() => false);
 }
 

@@ -22,7 +22,7 @@ type OCXManagedConfig = {
   items: Record<OCXItemKind, Record<string, InstalledOCXItem>>;
 };
 
-function jsoncError(message: string): JSONCError {
+function createJSONCError(message: string): JSONCError {
   return { _tag: "JSONCError", message };
 }
 
@@ -105,6 +105,7 @@ function computeDirRel(configRoot: ConfigRoot, kind: OCXItemKind, name: string):
 
 function toMode(mode: "0644" | "0755"): number {
   if (mode === "0644") return 0o644;
+  if (mode === "0755") return 0o755;
   return 0o755;
 }
 
@@ -228,11 +229,11 @@ function parseExistingOCXManagedConfigEffect(text: string): Effect.Effect<OCXMan
 
       return Effect.try({
         try: () => JSON.parse(val) as unknown,
-        catch: (cause) => jsoncError(`Invalid JSON in ocx property: ${stringifyCause(cause)}`),
+        catch: (cause) => createJSONCError(`Invalid JSON in ocx property: ${stringifyCause(cause)}`),
       }).pipe(
         Effect.flatMap((parsed) => {
           if (!isRecord(parsed)) {
-            return Effect.fail(jsoncError("Invalid ocx config: expected object"));
+            return Effect.fail(createJSONCError("Invalid ocx config: expected object"));
           }
 
           const raw = parsed.items;
@@ -253,7 +254,15 @@ function parseExistingOCXManagedConfigEffect(text: string): Effect.Effect<OCXMan
 }
 
 function updateConfigEffect(configPath: string, plans: InstallPlan[]): Effect.Effect<void, InstallError> {
-  return Effect.promise(() => Bun.file(configPath).text().catch(() => "{}" as const)).pipe(
+  return Effect.tryPromise({
+    try: async () => {
+      const file = Bun.file(configPath);
+      const exists = await file.exists();
+      if (!exists) return "{}";
+      return await file.text();
+    },
+    catch: (cause): InstallError => ioError("read", cause, configPath),
+  }).pipe(
     Effect.flatMap((text) =>
       parseExistingOCXManagedConfigEffect(text).pipe(
         Effect.flatMap((cfg) =>
