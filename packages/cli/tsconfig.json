@@ -7,6 +7,11 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@better-slop/core": ["../core/src/index.ts"],
+      "@better-slop/core/*": ["../core/src/*"]
+    },
 
     // Bundler mode
     "moduleResolution": "bundler",

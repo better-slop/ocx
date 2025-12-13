@@ -55,6 +55,9 @@
     },
     "packages/cli": {
       "name": "@better-slop/cli",
+      "dependencies": {
+        "@better-slop/core": "workspace:*",
+      },
       "devDependencies": {
         "@types/bun": "catalog:",
       },
@@ -479,9 +482,9 @@
 
     "@octokit/types": ["@octokit/types@14.1.0", "", { "dependencies": { "@octokit/openapi-types": "^25.1.0" } }, "sha512-1y6DgTy8Jomcpu33N+p5w58l6xyt55Ar2I91RPiIA0xCJBXyUAhXCcmZaDWSANiha7R9a6qJJ2CRomGPZ6f46g=="],
 
-    "@opencode-ai/plugin": ["@opencode-ai/plugin@1.0.150", "", { "dependencies": { "@opencode-ai/sdk": "1.0.150", "zod": "4.1.8" } }, "sha512-XmY3yydk120GBv2KeLxSZlElFx4Zx9TYLa3bS9X1TxXot42UeoMLEi3Xa46yboYnWwp4bC9Fu+Gd1E7hypG8Jw=="],
+    "@opencode-ai/plugin": ["@opencode-ai/plugin@1.0.152", "", { "dependencies": { "@opencode-ai/sdk": "1.0.152", "zod": "4.1.8" } }, "sha512-P8ov9iUOaonO1yWKnArYrIOcyzncFgIP0oDn3KTWbIM0viVA0lUf64GIwLuKcDd6W9m9ZgFcB06RzEKDnZHNjA=="],
 
-    "@opencode-ai/sdk": ["@opencode-ai/sdk@1.0.150", "", {}, "sha512-Nz9Di8UD/GK01w3N+jpiGNB733pYkNY8RNLbuE/HUxEGSP5apbXBY0IdhbW7859sXZZK38kF1NqOx4UxwBf4Bw=="],
+    "@opencode-ai/sdk": ["@opencode-ai/sdk@1.0.152", "", {}, "sha512-0m0Z8QFg98DMEt24PWOJZBrdUhKCHBYo5AHsCIrMkrH4jfl9V8zsN2upp1mWw+waREDEnFtQwdLA56oIS8gngQ=="],
 
     "@opennextjs/aws": ["@opennextjs/aws@3.9.1", "", { "dependencies": { "@ast-grep/napi": "^0.40.0", "@aws-sdk/client-cloudfront": "3.398.0", "@aws-sdk/client-dynamodb": "^3.398.0", "@aws-sdk/client-lambda": "^3.398.0", "@aws-sdk/client-s3": "^3.398.0", "@aws-sdk/client-sqs": "^3.398.0", "@node-minify/core": "^8.0.6", "@node-minify/terser": "^8.0.6", "@tsconfig/node18": "^1.0.3", "aws4fetch": "^1.0.20", "chalk": "^5.6.2", "cookie": "^1.0.2", "esbuild": "0.25.4", "express": "^5.1.0", "path-to-regexp": "^6.3.0", "urlpattern-polyfill": "^10.1.0", "yaml": "^2.8.1" }, "bin": { "open-next": "dist/index.js" } }, "sha512-livYX8aIjXCYt3plyxqKisAyGRFfcUfo1BYtZppmugcPQBokbIzZ+jEUJbqUq1qZAIxRVAqMHDikbyTRadOx9A=="],
 
@@ -1877,6 +1880,8 @@
 
     "@aws-sdk/middleware-signing/@smithy/util-middleware": ["@smithy/util-middleware@2.2.0", "", { "dependencies": { "@smithy/types": "^2.12.0", "tslib": "^2.6.2" } }, "sha512-L1qpleXf9QD6LwLCJ5jddGkgWyuSvWBkJwWAZ6kFkdifdso+sk3L3O1HdmPvCdnCK3IS4qWyPxev01QMnfHSBw=="],
 
+    "@better-slop/ocx-librarian-plugin/@opencode-ai/plugin": ["@opencode-ai/plugin@1.0.150", "", { "dependencies": { "@opencode-ai/sdk": "1.0.150", "zod": "4.1.8" } }, "sha512-XmY3yydk120GBv2KeLxSZlElFx4Zx9TYLa3bS9X1TxXot42UeoMLEi3Xa46yboYnWwp4bC9Fu+Gd1E7hypG8Jw=="],
+
     "@cspotcode/source-map-support/@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.9", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.0.3", "@jridgewell/sourcemap-codec": "^1.4.10" } }, "sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ=="],
 
     "@dotenvx/dotenvx/execa": ["execa@5.1.1", "", { "dependencies": { "cross-spawn": "^7.0.3", "get-stream": "^6.0.0", "human-signals": "^2.1.0", "is-stream": "^2.0.0", "merge-stream": "^2.0.0", "npm-run-path": "^4.0.1", "onetime": "^5.1.2", "signal-exit": "^3.0.3", "strip-final-newline": "^2.0.0" } }, "sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg=="],
@@ -2164,6 +2169,8 @@
     "@aws-sdk/middleware-signing/@smithy/signature-v4/@smithy/util-uri-escape": ["@smithy/util-uri-escape@2.2.0", "", { "dependencies": { "tslib": "^2.6.2" } }, "sha512-jtmJMyt1xMD/d8OtbVJ2gFZOSKc+ueYJZPW20ULW1GOp/q/YIM0wNh+u8ZFao9UaIGz4WoPW8hC64qlWLIfoDA=="],
 
     "@aws-sdk/middleware-signing/@smithy/signature-v4/@smithy/util-utf8": ["@smithy/util-utf8@2.3.0", "", { "dependencies": { "@smithy/util-buffer-from": "^2.2.0", "tslib": "^2.6.2" } }, "sha512-R8Rdn8Hy72KKcebgLiv8jQcQkXoLMOGGv5uI1/k0l+snqkOzQ1R0ChUBCxWMlBsFMekWjq0wRudIweFs7sKT5A=="],
+
+    "@better-slop/ocx-librarian-plugin/@opencode-ai/plugin/@opencode-ai/sdk": ["@opencode-ai/sdk@1.0.150", "", {}, "sha512-Nz9Di8UD/GK01w3N+jpiGNB733pYkNY8RNLbuE/HUxEGSP5apbXBY0IdhbW7859sXZZK38kF1NqOx4UxwBf4Bw=="],
 
     "@dotenvx/dotenvx/execa/get-stream": ["get-stream@6.0.1", "", {}, "sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg=="],
 

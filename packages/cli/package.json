@@ -6,6 +6,9 @@
   "exports": {
     ".": "./index.ts"
   },
+  "dependencies": {
+    "@better-slop/core": "workspace:*"
+  },
   "devDependencies": {
     "@types/bun": "catalog:"
   },

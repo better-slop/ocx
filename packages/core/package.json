@@ -7,6 +7,9 @@
   "exports": {
     ".": {
       "import": "./src/index.ts"
+    },
+    "./registry": {
+      "import": "./src/registry/index.ts"
     }
   },
   "dependencies": {
